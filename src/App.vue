@@ -5,19 +5,28 @@
   v-model:search="search"  
   v-model:onlyLiked="onlyLiked"
   v-model:onlyNewer="onlyNewer"
-  v-model:sortBy = "sortBy"
+  v-model:sortBy = "SortBy"
   @reset="resetFilter"
   />
 
   <FilmAddForm
-  v-model:title="title"
-  v-model:rating="rating"
-  v-model:year="year"
+  v-model:title="newTitle"
+  v-model:rating="newRating"
+  v-model:year="newYear"
   :error="error"
   @add="addMovie"
-  @toggle="toggleLike"
-  @remove ="removeMovie"
   />
+
+  <p v-if="filteredMovies.length === 0">Ничего не найдено</p>
+  <ul v-else>
+    <li v-for="movie in filteredMovies" :key="movie.id">
+      {{movie.title}}
+      {{movie.year}}
+      {{movie.rating}}
+      <button @click="toggleLike(movie)">{{movie.liked ? "❤":"🤍"}}</button>
+      <button @click="removeMovie(movie.id)">Удалить</button>
+    </li>
+  </ul>
   
 </div>
 

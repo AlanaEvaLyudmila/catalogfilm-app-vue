@@ -16,17 +16,6 @@
   <button @click="$emit('add')">Добавить</button>
   
   <p v-if="error">{{error}}</p>
-
-  <p v-if="filteredMovies.length === 0">Ничего не найдено</p>
-  <ul v-else>
-    <li v-for="movie in filteredMovies" :key="movie.id">
-      {{movie.title}}
-      {{movie.year}}
-      {{movie.rating}}
-      <button @click="$emit('toggle', movie)">{{movie.liked ? "❤":"🤍"}}</button>
-      <button @click="$emit('remove', movie.id)">Удалить</button>
-    </li>
-  </ul>
     </div>
 </template>
 
@@ -36,7 +25,6 @@ defineProps({
     year: String,
     rating: String,
     error: String,
-    filteredMovies: Array
 })
 
 defineEmits([
