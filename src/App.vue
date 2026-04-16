@@ -8,15 +8,17 @@
   v-model:sortBy = "SortBy"
   @reset="resetFilter"
   />
-
+<!-- 
   <FilmAddForm
   v-model:title="newTitle"
   v-model:rating="newRating"
   v-model:year="newYear"
   :error="error"
   @add="addMovie"
-  />
-
+  /> -->
+  <router-link to="/movies/new">
+    <nav>Добавить фильм</nav>
+  </router-link>
   <p v-if="filteredMovies.length === 0">Ничего не найдено</p>
   <ul v-else>
     <li v-for="movie in filteredMovies" :key="movie.id">
@@ -25,8 +27,12 @@
       {{movie.rating}}
       <button @click="toggleLike(movie)">{{movie.liked ? "❤":"🤍"}}</button>
       <button @click="removeMovie(movie.id)">Удалить</button>
+      <router-link :to="`/movies/${movie.id}/edit`">
+        <button>Редактировать</button>
+      </router-link>
     </li>
   </ul>
+  <router-view/>
   
 </div>
 
@@ -37,14 +43,14 @@
 import {ref,computed} from 'vue'
 import FilterForm from './components/FilterForm.vue'
 import FilmAddForm from './components/FilmAddForm.vue'
+import {movie} from './stores/movie'
 
-const movies = ref([
-  {id:1,title:"Чарли и шоколадная фабрика", year: 2012, rating:9.2, liked: false},
-  {id:2,title:"Матрица", year: 2004, rating: 8.2, liked: false},
-  {id:3,title:"Годзилла", year: 1999, rating:8.5, liked: false},
-  {id:4,title:"Мстители", year: 2014, rating:9.9, liked: false},
-])
-
+// const movies = ref([
+//   {id:1,title:"Чарли и шоколадная фабрика", year: 2012, rating:9.2, liked: false},
+//   {id:2,title:"Матрица", year: 2004, rating: 8.2, liked: false},
+//   {id:3,title:"Годзилла", year: 1999, rating:8.5, liked: false},
+//   {id:4,title:"Мстители", year: 2014, rating:9.9, liked: false},
+// ])
 
 const search = ref('')
 const onlyLiked = ref(false)
@@ -86,26 +92,7 @@ function removeMovie(id){
   movies.value = movies.value.filter(m => m.id!==id)
 }
 
-function addMovie(){
-  error.value = ''
-  if(!newTitle.value){
-    error.value = "Введите название"
-    return
-  }
 
-  const id = movies.value.length ===0 ? 1: movies.value.length + 1
-
-  movies.value.push({
-    id,
-    title : newTitle.value,
-    year: newYear.value,
-    rating: newRating.value,
-    liked: false
-  })
-  newTitle.value = ''
-  newRating.value =''
-  newYear.value =''
-}
 function resetFilter(){
   SortBy.value = 'title'
   search.value = ''

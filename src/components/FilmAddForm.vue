@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Добавить фильма</h3>
+        <h3>{{isEdit ? 'Редактировать фильм':'Добавить фильм'}}</h3>
     <input
         :value="title"
         @input="$emit('update:title',$event.target.value)"
@@ -13,8 +13,9 @@
         :value="year"
         @input="$emit('update:year',$event.target.value)"
         placeholder="Год"/>
-  <button @click="$emit('add')">Добавить</button>
+  <button @click="$emit('submit')">{{isEdit ? 'Сохранить':'Добавить'}}</button>
   
+  <button @click="$emit('cancel')">Отмена</button>
   <p v-if="error">{{error}}</p>
     </div>
 </template>
@@ -25,6 +26,7 @@ defineProps({
     year: String,
     rating: String,
     error: String,
+    isEdit: Boolean
 })
 
 defineEmits([
@@ -32,7 +34,7 @@ defineEmits([
     'update:year',
     'update:rating',
     'add',
-    'toggle',
-    'remove'
+    'submit',
+    'cancel'
 ])
 </script>
